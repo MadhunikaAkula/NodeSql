@@ -12,15 +12,15 @@ async function execute(){
     try{
         await client.connect();
         console.log("connected");
-        const results=await client.query("insert into employees values ($1,$2,$3,$4)",[12,'ndhbh','nag5@gmail.com','hdgfggrgg']);
-        console.table(results.rows);
-        await client.query("select * from employees where name=$1",["madhu"]);
-        const {rows}=await client.query("select * from employees");
-        console.table(rows);
-
-        await client.end();
+        await client.query("BEGIN");
+        // const results=await client.query("insert into employees values ($1,$2,$3,$4)",[15,'ndhbh','nag5@gmail.com','hdgfggrgg']);
+        // console.table(results.rows);
+        const {rows}=await client.query("select * from employees")
+        await client.query("COMMIT");
     }catch(ex){
-        console.log(ex)
+        console.log("failed");
+        await client.query("ROLLBACK");
+
     }finally{
         await client.end();
         console.log("ended successfully");
